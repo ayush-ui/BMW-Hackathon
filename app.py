@@ -69,9 +69,17 @@ def get_vector_data():
     translatedValue = translate([value])[0]['translations'][0]['text']
 
     results = search_vector_db(translatedValue,vector_store)
+    database_name = 'Test1'
+    container_name = 'DATA'
+    for i in results:
+        query_text = f"SELECT * FROM Items WHERE Items.notificationNumber = '{i['id']}'"
+        item = query_cosmos_db(database_name, container_name, query_text)
+        i["Lokation"]=item[0]['Lokation']
     response = {
         "results":results
     }
+
+
 
     if summary:
 
